@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  ntp_custom:
+    build:
+      context: .  # ???? ??????? ?? ?? UI Portainer ????? ???
+      dockerfile: Dockerfile
+    container_name: ntp_custom_server
+    ports:
+      - "123:123/udp"
+    volumes:
+      - ntp_data:/var/lib/chrony
+    tmpfs:
+      - /var/run/chrony
+    restart: unless-stopped
+    cap_add:
+      - SYS_TIME
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  ntp_data:
